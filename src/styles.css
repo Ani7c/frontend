@@ -1,0 +1,51 @@
+
+* {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+body {
+  font-weight: 300;
+  font-size: 0.9rem;
+}
+
+.btn {
+  font-weight: 400;
+}
+
+.card-title {
+  font-weight: 400;
+}
+
+/* Páginas de autenticación */
+.auth-page .form-label {
+  font-weight: 300;
+  font-size: 0.9rem;
+}
+
+/* Situación personal */
+.emoji-grande {
+  font-size: 2rem;
+}
+
+/* Contenedores del dashboard */
+.dashboard-section {
+  padding: 0.5rem 1.5rem;
+}
+
+/* Cards del informe global */
+.dashboard-section .card {
+  font-size: 1.1rem;
+}
+
+.dashboard-section .card-body {
+  padding: 1.2rem;
+}
+
+.dashboard-section .card-title {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.dashboard-section .card-text {
+  font-size: 1.05rem;
+}

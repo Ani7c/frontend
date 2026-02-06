@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
+import CartComparison from './CartComparison';
 
 const Cart = () => {
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [comparison, setComparison] = useState(null);
+    const [loadingComparison, setLoadingComparison] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
 
     const fetchCart = async () => {
@@ -17,13 +21,11 @@ const Cart = () => {
 
         setLoading(true);
         try {
-            const apiKey = "clave_secreta_optify";
             const headers = {
                 'Authorization': `Bearer ${token}`,
-                'X-API-Key': apiKey
             };
 
-            const response = await fetch('http://localhost:8080/api/cart/getProductsCart', {
+            const response = await fetch('http://localhost:8080/cart/getProductsCart', {
                 headers
             });
 
@@ -55,14 +57,12 @@ const Cart = () => {
         }
 
         try {
-            const apiKey = "clave_secreta_optify";
             const headers = {
-                'Authorization': `Bearer ${token}`,
-                'X-API-Key': apiKey
+                'Authorization': `Bearer ${token}`
             };
 
             const response = await fetch(
-                `http://localhost:8080/api/cart/removeProduct?id=${productId}`,
+                `http://localhost:8080/cart/removeProduct?id=${productId}`,
                 {
                     method: 'POST',
                     headers
@@ -91,14 +91,12 @@ const Cart = () => {
         }
 
         try {
-            const apiKey = "clave_secreta_optify";
             const headers = {
-                'Authorization': `Bearer ${token}`,
-                'X-API-Key': apiKey
+                'Authorization': `Bearer ${token}`
             };
 
             const response = await fetch(
-                `http://localhost:8080/api/cart/subtractUnitProductCart?id=${productId}`,
+                `http://localhost:8080/cart/subtractUnitProductCart?id=${productId}`,
                 {
                     method: 'POST',
                     headers
@@ -127,14 +125,12 @@ const Cart = () => {
         }
 
         try {
-            const apiKey = "clave_secreta_optify";
             const headers = {
-                'Authorization': `Bearer ${token}`,
-                'X-API-Key': apiKey
+                'Authorization': `Bearer ${token}`
             };
 
             const response = await fetch(
-                `http://localhost:8080/api/cart/addProduct?id=${productId}&quant=1`,
+                `http://localhost:8080/cart/addProduct?id=${productId}&quant=1`,
                 {
                     method: 'POST',
                     headers
@@ -150,6 +146,43 @@ const Cart = () => {
         } catch (error) {
             console.error("Error:", error);
             toast.error("Error al actualizar el carrito");
+        }
+    };
+
+    const handleCalculateComparison = async () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            toast.warning("Debes iniciar sesión");
+            navigate('/login');
+            return;
+        }
+
+        setLoadingComparison(true);
+        setShowModal(true);
+
+        try {
+            const response = await fetch('http://localhost:8080/cart/calculateCart', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setComparison(data);
+            } else {
+                const errorText = await response.text();
+                toast.error(errorText || 'Error al calcular el carrito');
+                setShowModal(false);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            toast.error('Error de conexión');
+            setShowModal(false);
+        } finally {
+            setLoadingComparison(false);
         }
     };
 
@@ -175,7 +208,7 @@ const Cart = () => {
             {cartItems.length === 0 ? (
                 <div className="text-center py-5">
                     <h4 className="text-muted">Tu carrito está vacío</h4>
-                    <button 
+                    <button
                         className="btn btn-primary mt-3"
                         onClick={() => navigate('/products')}
                     >
@@ -192,9 +225,9 @@ const Cart = () => {
                                         <div className="row align-items-center g-3">
                                             <div className="col-md-2">
                                                 {item.productImageUrl && (
-                                                    <img 
-                                                        src={item.productImageUrl} 
-                                                        alt={item.productName} 
+                                                    <img
+                                                        src={item.productImageUrl}
+                                                        alt={item.productName}
                                                         className="img-fluid"
                                                         style={{ maxHeight: '100px', objectFit: 'contain' }}
                                                     />
@@ -236,7 +269,7 @@ const Cart = () => {
                                                 </div>
                                             </div>
                                             <div className="col-md-2 text-end">
-                                                <button 
+                                                <button
                                                     className="btn btn-danger btn-sm"
                                                     onClick={() => handleRemoveProduct(item.productId)}
                                                 >
@@ -253,7 +286,13 @@ const Cart = () => {
                     <div className="card mt-4 bg-light">
                         <div className="card-body">
                             <div className="row mt-3">
-                                <div className="col-12 text-end">
+                                <div className="col-12 d-flex justify-content-end gap-3">
+                                    <button
+                                        className="btn btn-info btn-lg"
+                                        onClick={handleCalculateComparison}
+                                    >
+                                        📊 Calcular Mejor Opción
+                                    </button>
                                     <button className="btn btn-success btn-lg">
                                         Finalizar Compra
                                     </button>
@@ -261,6 +300,38 @@ const Cart = () => {
                             </div>
                         </div>
                     </div>
+
+                    {/* Modal de Comparación */}
+                    {showModal && (
+                        <div className="modal d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                            <div className="modal-dialog modal-xl">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h5 className="modal-title">Comparación de Carritos</h5>
+                                        <button
+                                            type="button"
+                                            className="btn-close"
+                                            onClick={() => setShowModal(false)}
+                                        ></button>
+                                    </div>
+                                    <CartComparison
+                                        comparison={comparison}
+                                        loading={loadingComparison}
+                                        onClose={() => setShowModal(false)}
+                                    />
+                                    <div className="modal-footer">
+                                        <button
+                                            type="button"
+                                            className="btn btn-secondary"
+                                            onClick={() => setShowModal(false)}
+                                        >
+                                            Cerrar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </>
             )}
         </div>

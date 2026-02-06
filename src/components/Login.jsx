@@ -33,7 +33,6 @@ const Login = () => {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
-        'X-API-KEY': 'clave_secreta_optify'
       },
       body: JSON.stringify({
         userUsername,
@@ -42,7 +41,7 @@ const Login = () => {
       redirect: "follow"
     };
 
-    fetch("http://localhost:8080/api/users/login", requestOptions)
+    fetch("http://localhost:8080/users/login", requestOptions)
   .then(async response => {
     if (!response.ok) {
       const error = await response.text();

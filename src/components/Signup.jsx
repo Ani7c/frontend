@@ -67,20 +67,14 @@ const Signup = () => {
         };
 
         try {
-            const response = await fetch("http://localhost:8080/api/users/register", requestOptions);
+            const response = await fetch("http://localhost:8080/users/register", requestOptions);
 
             // Obtener el texto de la respuesta primero
             const textBody = await response.text();
-            let body;
 
-            try {
-                body = JSON.parse(textBody);
-            } catch {
-                // Si no es JSON, usar el texto plano
-                body = { error: textBody };
-            }
-
-            if (response.ok && body.token) {
+            if (response.ok) {
+                // Si es exitoso, el backend devuelve el token como texto plano
+                const token = textBody.trim();
                 campoCedula.current.value = "";
                 campoNombre.current.value = "";
                 campoApellido.current.value = "";
@@ -94,10 +88,16 @@ const Signup = () => {
                 setBotonHabilitado(false);
                 navigate("/products");
             } else {
-                // Capturar el mensaje de error del backend (texto plano o JSON)
-                const mensajeErrorBackend = body.error || body.message || body.mensaje || textBody || "Error desconocido en el registro";
-                setMensajeError(mensajeErrorBackend);
-                toast.error(mensajeErrorBackend);
+                // Si hay error, intentar parsear como JSON o usar texto plano
+                let errorMessage = textBody;
+                try {
+                    const errorJson = JSON.parse(textBody);
+                    errorMessage = errorJson.error || errorJson.message || errorJson.mensaje || textBody;
+                } catch {
+                    // Ya tenemos el texto plano en errorMessage
+                }
+                setMensajeError(errorMessage);
+                toast.error(errorMessage);
             }
         } catch (error) {
             const mensajeConexion = "Error de conexión con el servidor";
@@ -109,23 +109,19 @@ const Signup = () => {
     useEffect(() => {
         const fetchTiendas = async () => {
             try {
-                const apiKey = "clave_secreta_optify";
                 const headers = {
                     'Accept': 'application/json',
-                    'X-API-Key': apiKey
                 };
 
-                const response = await fetch('http://localhost:8080/api/stores/getAllStores', { headers });
+                const response = await fetch('http://localhost:8080/stores/getAllStores', { headers });
                 if (response.ok) {
                     const data = await response.json();
                     setTiendas(data);
                 } else {
                     console.error('Error cargando tiendas:', response.statusText);
-                    toast.error('Error al cargar las tiendas');
                 }
             } catch (error) {
                 console.error('Error cargando tiendas:', error);
-                toast.error('Error de conexión al cargar tiendas');
             }
         };
         fetchTiendas();

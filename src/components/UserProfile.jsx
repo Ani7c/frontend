@@ -41,13 +41,11 @@ const UserProfile = () => {
 
     const fetchStores = async () => {
         try {
-            const apiKey = "clave_secreta_optify";
             const headers = {
-                'Accept': 'application/json',
-                'X-API-Key': apiKey
+                'Accept': 'application/json'
             };
 
-            const response = await fetch('http://localhost:8080/api/stores/getAllStores', { headers });
+            const response = await fetch('http://localhost:8080/stores/getAllStores', { headers });
             if (response.ok) {
                 const data = await response.json();
                 setStores(data);
@@ -59,12 +57,10 @@ const UserProfile = () => {
 
     const fetchUserProfile = async () => {
         const token = localStorage.getItem('token');
-        const apiKey = "clave_secreta_optify";
 
         try {
             const headers = {
-                'Authorization': `Bearer ${token}`,
-                'X-API-Key': apiKey
+                'Authorization': `Bearer ${token}`
             };
 
             // Asumiendo que hay un endpoint para obtener el perfil del usuario
@@ -86,13 +82,11 @@ const UserProfile = () => {
     const handleUpdateProfile = async (e) => {
         e.preventDefault();
         const token = localStorage.getItem('token');
-        const apiKey = "clave_secreta_optify";
 
         try {
             const headers = {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-                'X-API-Key': apiKey
+                'Authorization': `Bearer ${token}`
             };
 
             const body = {
@@ -136,13 +130,11 @@ const UserProfile = () => {
         }
 
         const token = localStorage.getItem('token');
-        const apiKey = "clave_secreta_optify";
 
         try {
             const headers = {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-                'X-API-Key': apiKey
+                'Authorization': `Bearer ${token}`
             };
 
             const body = {

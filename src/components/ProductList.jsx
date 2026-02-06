@@ -52,11 +52,9 @@ const ProductList = () => {
     const fetchProducts = async (page = 0) => {
         setLoading(true);
         try {
-            const apiKey = "clave_secreta_optify"
             const headers = {
                 'Accept': 'application/json'
             };
-            if (apiKey) headers['X-API-Key'] = apiKey;
 
             let url;
             if (selectedCategory && searchTerm) {
@@ -124,14 +122,12 @@ const ProductList = () => {
         const quantity = quantities[product.productId] || 1;
 
         try {
-            const apiKey = "clave_secreta_optify";
             const headers = {
-                'Authorization': `Bearer ${token}`,
-                'X-API-Key': apiKey
+                'Authorization': `Bearer ${token}`
             };
 
             const response = await fetch(
-                `http://localhost:8080/api/cart/addProduct?id=${product.productId}&quant=${quantity}`,
+                `http://localhost:8080/cart/addProduct?id=${product.productId}&quant=${quantity}`,
                 {
                     method: 'POST',
                     headers
@@ -154,9 +150,7 @@ const ProductList = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const apiKey = "clave_secreta_optify";
                 const headers = { 'Accept': 'application/json' };
-                if (apiKey) headers['X-API-Key'] = apiKey;
 
                 const resp = await fetch('http://localhost:8080/api/products/categories', { headers });
                 if (resp.ok) {

@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import CartComparison from './CartComparison';
+import CartItem from './cart/CartItem';
+import CartSummary from './cart/CartSummary';
+import EmptyCart from './cart/EmptyCart';
 
 const Cart = () => {
     const [cartItems, setCartItems] = useState([]);
@@ -206,100 +209,23 @@ const Cart = () => {
             <h2 className="mb-4">🛒 Mi Carrito</h2>
 
             {cartItems.length === 0 ? (
-                <div className="text-center py-5">
-                    <h4 className="text-muted">Tu carrito está vacío</h4>
-                    <button
-                        className="btn btn-primary mt-3"
-                        onClick={() => navigate('/products')}
-                    >
-                        Ir a comprar
-                    </button>
-                </div>
+                <EmptyCart onGoToProducts={() => navigate('/products')} />
             ) : (
                 <>
                     <div className="row g-3">
                         {cartItems.map((item) => (
                             <div key={item.productId} className="col-12">
-                                <div className="card">
-                                    <div className="card-body">
-                                        <div className="row align-items-center g-3">
-                                            <div className="col-md-2">
-                                                {item.productImageUrl && (
-                                                    <img
-                                                        src={item.productImageUrl}
-                                                        alt={item.productName}
-                                                        className="img-fluid"
-                                                        style={{ maxHeight: '100px', objectFit: 'contain' }}
-                                                    />
-                                                )}
-                                            </div>
-                                            <div className="col-md-5">
-                                                <h5 className="card-title mb-1">{item.productName}</h5>
-                                                {item.productBrand && (
-                                                    <p className="text-muted small mb-0">{item.productBrand}</p>
-                                                )}
-                                            </div>
-                                            <div className="col-md-3 text-center">
-                                                <p className="mb-1 text-muted small">Cantidad</p>
-                                                <div className="btn-group" role="group">
-                                                    <button
-                                                        type="button"
-                                                        className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center justify-content-center"
-                                                        style={{ width: 32, height: 32, padding: 0 }}
-                                                        onClick={() => handleSubtractUnit(item.productId)}
-                                                        disabled={(item.quant || item.quantity || 0) <= 1}
-                                                    >
-                                                        −
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        className="btn btn-outline-secondary btn-sm"
-                                                        style={{ cursor: 'default', minWidth: 44 }}
-                                                    >
-                                                        {item.quant ?? item.quantity ?? 0}
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center justify-content-center"
-                                                        style={{ width: 32, height: 32, padding: 0 }}
-                                                        onClick={() => handleAddUnit(item.productId)}
-                                                    >
-                                                        +
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div className="col-md-2 text-end">
-                                                <button
-                                                    className="btn btn-danger btn-sm"
-                                                    onClick={() => handleRemoveProduct(item.productId)}
-                                                >
-                                                    🗑️ Eliminar
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <CartItem
+                                    item={item}
+                                    onRemove={handleRemoveProduct}
+                                    onSubtract={handleSubtractUnit}
+                                    onAdd={handleAddUnit}
+                                />
                             </div>
                         ))}
                     </div>
 
-                    <div className="card mt-4 bg-light">
-                        <div className="card-body">
-                            <div className="row mt-3">
-                                <div className="col-12 d-flex justify-content-end gap-3">
-                                    <button
-                                        className="btn btn-info btn-lg"
-                                        onClick={handleCalculateComparison}
-                                    >
-                                        📊 Calcular Mejor Opción
-                                    </button>
-                                    <button className="btn btn-success btn-lg">
-                                        Finalizar Compra
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <CartSummary onCalculate={handleCalculateComparison} />
 
                     {/* Modal de Comparación */}
                     {showModal && (

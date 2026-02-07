@@ -55,7 +55,7 @@ const Login = () => {
     navigate("/products"); 
   })
   .catch(error => {
-    toast.error(error.message || "Error de login");
+    setMensajeError(error.message || "Error de login");
   });
 
   }
@@ -97,7 +97,7 @@ const Login = () => {
           <input
             type="button"
             value="Ingresar"
-            className={`btn btn-primary w-100 mb-3 ${!botonHabilitado ? 'opacity-50' : ''}`}
+            className={`btn btn-success w-100 mb-3 ${!botonHabilitado ? 'opacity-50' : ''}`}
             onClick={ingresar}
             disabled={!botonHabilitado}
           />

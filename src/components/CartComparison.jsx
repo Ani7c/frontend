@@ -3,12 +3,12 @@ function CartComparison({ comparison, loading, onClose }) {
     return null;
   }
 
-  const renderCartCard = (simulation, title, badgeColor, isBest = false) => {
+  const renderCartCard = (simulation, title, isBest = false) => {
     return (
       <div className="col-md-4 mb-4">
         <div className={`card h-100 ${isBest ? 'border-success border-3' : ''}`}>
-          <div className={`card-header bg-${badgeColor} text-white text-center`}>
-            <h5 className="mb-0">{title}</h5>
+          <div className={`card-header text-center ${isBest ? 'bg-success text-white' : 'bg-white'}`}>
+            <h5 className={`mb-0 ${isBest ? '' : 'text-success'}`}>{title}</h5>
             {isBest && <small>✨ Mejor opción ✨</small>}
           </div>
           <div className="card-body">
@@ -31,22 +31,26 @@ function CartComparison({ comparison, loading, onClose }) {
 
             <h6 className="mb-2">Productos ({simulation.products?.length || 0}):</h6>
             <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
-              {simulation.products?.map((product, index) => (
-                <div key={index} className="mb-2 p-2 bg-light rounded">
-                  <div className="d-flex justify-content-between align-items-start">
+              {simulation.products?.map((item, index) => (
+                <div key={index} className="mb-3 p-2 bg-light rounded">
+                  <div className="d-flex justify-content-between align-items-start mb-2">
                     <div style={{ flex: 1 }}>
-                      <small className="d-block"><strong>{product.productName}</strong></small>
-                      <small className="text-muted">{product.productBrand}</small>
+                      <small className="d-block"><strong>{item.product?.name}</strong></small>
                     </div>
-                    <div className="text-end ms-2">
-                      <small className="d-block text-success">
-                        ${product.productPrice?.toLocaleString('es-CL')}
-                      </small>
-                      {product.quant && (
-                        <small className="text-muted">x{product.quant}</small>
-                      )}
-                    </div>
+                    <small className="d-block text-success ms-2">
+                      ${item.price?.toLocaleString('es-CL')}
+                    </small>
                   </div>
+                  {isBest && item.stores && item.stores.length > 0 && (
+                    <div className="ms-2">
+                      <small className="text-muted d-block mb-1">📍 Disponible en:</small>
+                      {item.stores.map((store, storeIdx) => (
+                        <small key={storeIdx} className="d-block text-muted ps-2">
+                          • {store.fantasyName}
+                        </small>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -66,28 +70,22 @@ function CartComparison({ comparison, loading, onClose }) {
         </div>
       ) : (
         <>
-          <div className="alert alert-info mb-4">
-            <strong>💡 Tip:</strong> Compara las opciones y elige la que mejor se adapte a tus necesidades.
-          </div>
 
           <div className="row">
             {comparison.optimum && renderCartCard(
               comparison.optimum,
               'Compra Óptima',
-              'success',
               true
             )}
             
             {comparison.preferedStore && renderCartCard(
               comparison.preferedStore,
-              'Tu Tienda Preferida',
-              'primary'
+              'Tu Tienda Preferida'
             )}
             
             {comparison.cheapestStore && renderCartCard(
               comparison.cheapestStore,
-              'Tienda Más Barata',
-              'warning'
+              'Tienda Más Barata'
             )}
           </div>
         </>

@@ -18,13 +18,13 @@ const UserProfile = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
 
     const daysOfWeek = [
-        { value: 1, label: 'Lunes' },
-        { value: 2, label: 'Martes' },
-        { value: 3, label: 'Miércoles' },
-        { value: 4, label: 'Jueves' },
-        { value: 5, label: 'Viernes' },
-        { value: 6, label: 'Sábado' },
-        { value: 7, label: 'Domingo' }
+        { value: 1, label: 'Domingo' },
+        { value: 2, label: 'Lunes' },
+        { value: 3, label: 'Martes' },
+        { value: 4, label: 'Miércoles' },
+        { value: 5, label: 'Jueves' },
+        { value: 6, label: 'Viernes' },
+        { value: 7, label: 'Sábado' }
     ];
 
     useEffect(() => {
@@ -287,12 +287,6 @@ const UserProfile = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div className="mt-4">
-                <button className="btn btn-outline-secondary" onClick={() => navigate('/products')}>
-                    ← Volver a Productos
-                </button>
             </div>
         </div>
     );

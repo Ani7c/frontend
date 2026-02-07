@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Cart from './components/Cart'
 import NavBar from './components/NavBar'
 import UserProfile from './components/UserProfile'
+import AdminPanel from './components/AdminPanel'
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
           <Route path="/products" element={<ProductList />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/profile" element={<UserProfile />} />
+          <Route path="/admin" element={<AdminPanel />} />
 
         </Routes>
       

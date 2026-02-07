@@ -22,7 +22,7 @@ const NavBar = () => {
                     <span className="navbar-toggler-icon"></span>
                 </button>
 
-                <div className="collapse navbar-collapse" id="navMain">
+                <div className="collapse navbar-collapse align-items-center" id="navMain">
                     {token ? (
                         <>
                             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
@@ -48,10 +48,10 @@ const NavBar = () => {
                         </>
                     ) : (
                         <>
-                            <ul className="navbar-nav mb-2 mb-lg-0">
+                            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             </ul>
-                            <div className="d-flex flex-column gap-2" id="navButtons">
-                                <Link className="btn btn-light btn-sm" to="/login">Iniciar sesión</Link>
+                            <div className="d-flex flex-column flex-lg-row align-items-center gap-2" id="navButtons">
+                                <Link className="text-white small text-decoration-none" to="/login">Iniciar sesión</Link>
                                 <Link className="btn btn-light btn-sm" to="/signup">Registrarse</Link>
                             </div>
                         </>

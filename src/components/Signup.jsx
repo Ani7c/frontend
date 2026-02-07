@@ -2,6 +2,8 @@ import { useRef, useState, useId, useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+
 const Signup = () => {
     const [tiendas, setTiendas] = useState([]);
 
@@ -67,7 +69,7 @@ const Signup = () => {
         };
 
         try {
-            const response = await fetch("http://localhost:8080/users/register", requestOptions);
+            const response = await fetch(`${API_BASE_URL}/users/register`, requestOptions);
 
             // Obtener el texto de la respuesta primero
             const textBody = await response.text();
@@ -126,7 +128,7 @@ const Signup = () => {
                     'Accept': 'application/json',
                 };
 
-                const response = await fetch('http://localhost:8080/stores/getAllStores', { headers });
+                const response = await fetch(`${API_BASE_URL}/stores/getAllStores`, { headers });
                 if (response.ok) {
                     const data = await response.json();
                     setTiendas(data);

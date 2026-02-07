@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+
 const UserProfile = () => {
     const navigate = useNavigate();
     const [stores, setStores] = useState([]);
@@ -95,7 +97,7 @@ const UserProfile = () => {
                 userPreferredStore: preferredStore ? parseInt(preferredStore) : null
             };
 
-            const response = await fetch('http://localhost:8080/api/users/updateProfile', {
+            const response = await fetch(`${API_BASE_URL}/api/users/updateProfile`, {
                 method: 'POST',
                 headers,
                 body: JSON.stringify(body)
@@ -142,7 +144,7 @@ const UserProfile = () => {
                 newPassword
             };
 
-            const response = await fetch('http://localhost:8080/api/users/changePassword', {
+            const response = await fetch(`${API_BASE_URL}/api/users/changePassword`, {
                 method: 'POST',
                 headers,
                 body: JSON.stringify(body)

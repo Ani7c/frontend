@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+
 const MatchesPending = () => {
     const [matches, setMatches] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -14,7 +16,7 @@ const MatchesPending = () => {
         setLoading(true);
         
         try {
-            const response = await fetch('http://localhost:8080/matching/all', {
+            const response = await fetch(`${API_BASE_URL}/matching/all`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             
@@ -41,7 +43,7 @@ const MatchesPending = () => {
         const token = localStorage.getItem('token');
         
         try {
-            const response = await fetch(`http://localhost:8080/matching/confirm?id=${matchId}`, {
+            const response = await fetch(`${API_BASE_URL}/matching/confirm?id=${matchId}`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -67,7 +69,7 @@ const MatchesPending = () => {
         const token = localStorage.getItem('token');
 
         try {
-            const response = await fetch(`http://localhost:8080/matching/decline?id=${matchId}`, {
+            const response = await fetch(`${API_BASE_URL}/matching/decline?id=${matchId}`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` }
             });

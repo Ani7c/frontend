@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+
 const StoresManagement = () => {
     const [stores, setStores] = useState([]);
     const [showStoreForm, setShowStoreForm] = useState(false);
@@ -82,7 +84,7 @@ const StoresManagement = () => {
         setLoading(true);
         
         try {
-            const response = await fetch(`http://localhost:8080/stores/deleteStore?rut=${rut}`, {
+            const response = await fetch(`${API_BASE_URL}/stores/deleteStore?rut=${rut}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });

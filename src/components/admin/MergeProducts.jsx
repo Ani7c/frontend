@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+
 const MergeProducts = () => {
     const [keepProductId, setKeepProductId] = useState('');
     const [suprProductId, setSuprProductId] = useState('');
@@ -13,7 +15,7 @@ const MergeProducts = () => {
         
         try {
             const response = await fetch(
-                `http://localhost:8080/products/mergeProducts?keepProductId=${keepProductId}&suprProductId=${suprProductId}`,
+                `${API_BASE_URL}/products/mergeProducts?keepProductId=${keepProductId}&suprProductId=${suprProductId}`,
                 {
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${token}` }

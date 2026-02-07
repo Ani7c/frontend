@@ -6,6 +6,8 @@ import CartItem from './cart/CartItem';
 import CartSummary from './cart/CartSummary';
 import EmptyCart from './cart/EmptyCart';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+
 const Cart = () => {
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -28,7 +30,7 @@ const Cart = () => {
                 'Authorization': `Bearer ${token}`,
             };
 
-            const response = await fetch('http://localhost:8080/cart/getProductsCart', {
+            const response = await fetch(`${API_BASE_URL}/cart/getProductsCart`, {
                 headers
             });
 
@@ -65,7 +67,7 @@ const Cart = () => {
             };
 
             const response = await fetch(
-                `http://localhost:8080/cart/removeProduct?id=${productId}`,
+                `${API_BASE_URL}/cart/removeProduct?id=${productId}`,
                 {
                     method: 'POST',
                     headers
@@ -99,7 +101,7 @@ const Cart = () => {
             };
 
             const response = await fetch(
-                `http://localhost:8080/cart/subtractUnitProductCart?id=${productId}`,
+                `${API_BASE_URL}/cart/subtractUnitProductCart?id=${productId}`,
                 {
                     method: 'POST',
                     headers
@@ -133,7 +135,7 @@ const Cart = () => {
             };
 
             const response = await fetch(
-                `http://localhost:8080/cart/addProduct?id=${productId}&quant=1`,
+                `${API_BASE_URL}/cart/addProduct?id=${productId}&quant=1`,
                 {
                     method: 'POST',
                     headers
@@ -164,7 +166,7 @@ const Cart = () => {
         setShowModal(true);
 
         try {
-            const response = await fetch('http://localhost:8080/cart/calculateCart', {
+            const response = await fetch(`${API_BASE_URL}/cart/calculateCart`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,

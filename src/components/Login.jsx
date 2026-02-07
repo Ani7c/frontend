@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router"
 import { toast } from "react-toastify";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
 const Login = () => {
 
@@ -41,7 +42,7 @@ const Login = () => {
       redirect: "follow"
     };
 
-    fetch("http://localhost:8080/users/login", requestOptions)
+    fetch(`${API_BASE_URL}/users/login`, requestOptions)
       .then(async response => {
         const textBody = await response.text();
         if (!response.ok) {

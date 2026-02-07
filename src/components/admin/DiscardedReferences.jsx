@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+
 const DiscardedReferences = () => {
     const [references, setReferences] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -16,7 +18,7 @@ const DiscardedReferences = () => {
         setErrorMessage('');
 
         try {
-            const response = await fetch('http://localhost:8080/matching/getAllDiscarded', {
+            const response = await fetch(`${API_BASE_URL}/matching/getAllDiscarded`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
 
@@ -41,7 +43,7 @@ const DiscardedReferences = () => {
         const token = localStorage.getItem('token');
         setErrorMessage('');
         try {
-            const response = await fetch(`http://localhost:8080/matching/deleteReferenceDiscarded?id=${id}`, {
+            const response = await fetch(`${API_BASE_URL}/matching/deleteReferenceDiscarded?id=${id}`, {
                 method: 'GET',
                 headers: { 'Authorization': `Bearer ${token}` }
             });

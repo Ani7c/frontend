@@ -3,11 +3,14 @@ import { Link, useNavigate } from 'react-router';
 const NavBar = () => {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
-    const userLabel = localStorage.getItem('userEmail') || 'Mi cuenta';
+    const role = localStorage.getItem('role');
+    const userLabel = localStorage.getItem('userEmail') || localStorage.getItem('userName') || 'Mi cuenta';
 
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('userEmail');
+        localStorage.removeItem('userName');
+        localStorage.removeItem('role');
         navigate('/login');
     };
 
@@ -30,9 +33,11 @@ const NavBar = () => {
                                 <li className="nav-item">
                                     <Link className="nav-link text-white" to="/cart">Carrito</Link>
                                 </li>
-                                <li className="nav-item">
-                                    <Link className="nav-link text-white" to="/admin">Admin</Link>
-                                </li>
+                                {role === 'ADMIN' && (
+                                    <li className="nav-item">
+                                        <Link className="nav-link text-white" to="/admin">Admin</Link>
+                                    </li>
+                                )}
                             </ul>
 
                             <div className="d-flex align-items-center gap-2">

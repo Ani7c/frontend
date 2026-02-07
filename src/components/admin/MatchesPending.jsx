@@ -59,12 +59,38 @@ const MatchesPending = () => {
         }
     };
 
+    const handleDeclineMatch = async (matchId) => {
+        if (!confirm('¿Rechazar este match? Se moverá a descartados.')) {
+            return;
+        }
+
+        const token = localStorage.getItem('token');
+
+        try {
+            const response = await fetch(`http://localhost:8080/matching/decline?id=${matchId}`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (response.ok) {
+                toast.success('Match rechazado correctamente');
+                fetchMatches();
+            } else {
+                const error = await response.text();
+                toast.error(error);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            toast.error('Error al rechazar match');
+        }
+    };
+
     return (
         <div>
             <div className="d-flex justify-content-between align-items-center mb-3">
                 <h4>Matches Pendientes</h4>
                 <button className="btn btn-success" onClick={fetchMatches}>
-                    🔄 Actualizar
+                    Actualizar
                 </button>
             </div>
 
@@ -142,6 +168,12 @@ const MatchesPending = () => {
                                                 onClick={() => handleConfirmMatch(match.idMatchPending)}
                                             >
                                                 ✓ Confirmar Match
+                                            </button>
+                                            <button
+                                                className="btn btn-outline-secondary w-100"
+                                                onClick={() => handleDeclineMatch(match.idMatchPending)}
+                                            >
+                                                ✕ Rechazar
                                             </button>
                                         </div>
                                     </div>

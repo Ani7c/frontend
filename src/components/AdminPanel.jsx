@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
-import MatchesPending from './admin/MatchesPending';
-import MergeProducts from './admin/MergeProducts';
-import StoresManagement from './admin/StoresManagement';
+import MatchesPending from './admin/MatchesPending.jsx';
+import MergeProducts from './admin/MergeProducts.jsx';
+import StoresManagement from './admin/StoresManagement.jsx';
+import DiscardedReferences from './admin/DiscardedReferences.jsx';
 
 const AdminPanel = () => {
     const navigate = useNavigate();
@@ -47,6 +48,14 @@ const AdminPanel = () => {
                         Gestión de Tiendas
                     </button>
                 </li>
+                <li className="nav-item">
+                    <button
+                        className={`nav-link ${activeTab === 'discarded' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('discarded')}
+                    >
+                        Descartados
+                    </button>
+                </li>
             </ul>
 
             {/* MATCHES PENDIENTES */}
@@ -57,6 +66,9 @@ const AdminPanel = () => {
 
             {/* GESTIÓN DE TIENDAS */}
             {activeTab === 'stores' && <StoresManagement />}
+
+            {/* DESCARTADOS */}
+            {activeTab === 'discarded' && <DiscardedReferences />}
         </div>
     );
 };

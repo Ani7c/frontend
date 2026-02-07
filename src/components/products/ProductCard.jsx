@@ -1,6 +1,6 @@
 const ProductCard = ({ product, onAddToCart }) => {
     return (
-        <div className="card h-100">
+        <div className="card h-100" style={{width: '240px'}}>
             {product.productImageUrl && (
                 <img 
                     src={product.productImageUrl} 

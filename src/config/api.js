@@ -1,5 +1,5 @@
 // Configuración centralizada de la API
-const API_BASE_URL = 'http://localhost:8080';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
 // Endpoints de autenticación
 export const AUTH_ENDPOINTS = {

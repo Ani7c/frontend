@@ -144,7 +144,7 @@ const ProductList = () => {
     }, [currentPage, selectedCategory, searchTerm]);
 
     return (
-        <div className="container py-4" style={{ maxWidth: '1400px', paddingLeft: '3rem', paddingRight: '3rem' }}>
+        <div className="container py-4">
             <ProductFilters
                 searchTerm={searchTerm}
                 setSearchTerm={setSearchTerm}
@@ -159,10 +159,10 @@ const ProductList = () => {
                 <p className="text-center mt-5">Cargando catálogo...</p>
             ) : (
                 <>
-                    <div className="row g-3">
+                    <div className="d-flex flex-wrap gap-3">
                         {products && products.length > 0 ? (
                             products.map((p) => (
-                                <div key={p.idWeb || p.productId} className="col-6 col-md-4 col-lg-3 col-xl-2">
+                                <div key={p.idWeb || p.productId}>
                                     <ProductCard 
                                         product={p} 
                                         onAddToCart={handleAddToCart}

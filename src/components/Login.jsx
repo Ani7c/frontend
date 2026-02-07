@@ -14,8 +14,8 @@ const Login = () => {
   const [botonHabilitado, setBotonHabilitado] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("token") && localStorage.getItem("id")) {
-          navigate("/products"); 
+    if (localStorage.getItem("token")) {
+      navigate("/products"); 
     }
   }, [])
 
@@ -42,21 +42,40 @@ const Login = () => {
     };
 
     fetch("http://localhost:8080/users/login", requestOptions)
-  .then(async response => {
-    if (!response.ok) {
-      const error = await response.text();
-      throw new Error(error);
-    }
-    return response.text(); 
-  })
-  .then(token => {
-    setMensajeError("");
-    localStorage.setItem("token", token);
-    navigate("/products"); 
-  })
-  .catch(error => {
-    setMensajeError(error.message || "Error de login");
-  });
+      .then(async response => {
+        const textBody = await response.text();
+        if (!response.ok) {
+          throw new Error(textBody);
+        }
+
+        let data;
+        try {
+          data = JSON.parse(textBody);
+        } catch {
+          data = { token: textBody };
+        }
+
+        return data;
+      })
+      .then(data => {
+        setMensajeError("");
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+        }
+        if (data.role) {
+          localStorage.setItem("role", data.role);
+        }
+        if (data.mail) {
+          localStorage.setItem("userEmail", data.mail);
+        }
+        if (data.name) {
+          localStorage.setItem("userName", data.name);
+        }
+        navigate("/products"); 
+      })
+      .catch(error => {
+        setMensajeError(error.message || "Error de login");
+      });
 
   }
   return (

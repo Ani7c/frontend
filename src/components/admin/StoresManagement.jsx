@@ -199,7 +199,7 @@ const StoresManagement = () => {
                                     className="btn btn-success"
                                     disabled={loading}
                                 >
-                                    {loading ? 'Guardando...' : (editingStore ? '💾 Actualizar' : '➕ Crear')}
+                                    {loading ? 'Guardando...' : (editingStore ? 'Actualizar' : '➕ Crear')}
                                 </button>
                                 <button
                                     type="button"
@@ -243,14 +243,14 @@ const StoresManagement = () => {
                                             onClick={() => handleEditStore(store)}
                                             disabled={loading}
                                         >
-                                            ✏️ Editar
+                                            Editar
                                         </button>
                                         <button
                                             className="btn btn-sm btn-outline-danger"
                                             onClick={() => handleDeleteStore(store.rut)}
                                             disabled={loading}
                                         >
-                                            🗑️ Eliminar
+                                            Eliminar
                                         </button>
                                     </div>
                                 </div>

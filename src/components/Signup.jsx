@@ -73,8 +73,14 @@ const Signup = () => {
             const textBody = await response.text();
 
             if (response.ok) {
-                // Si es exitoso, el backend devuelve el token como texto plano
-                const token = textBody.trim();
+                let data;
+                try {
+                    data = JSON.parse(textBody);
+                } catch {
+                    data = { token: textBody.trim() };
+                }
+
+                const token = data.token || textBody.trim();
                 campoCedula.current.value = "";
                 campoNombre.current.value = "";
                 campoApellido.current.value = "";
@@ -84,6 +90,15 @@ const Signup = () => {
                 campoTienda.current.value = "";
                 campoDia.current.value = "";
                 localStorage.setItem("token", token);
+                if (data.role) {
+                    localStorage.setItem("role", data.role);
+                }
+                if (data.mail) {
+                    localStorage.setItem("userEmail", data.mail);
+                }
+                if (data.name) {
+                    localStorage.setItem("userName", data.name);
+                }
                 toast.success("Registro exitoso");
                 setBotonHabilitado(false);
                 navigate("/products");

@@ -5,6 +5,8 @@ import MatchesPending from './admin/MatchesPending.jsx';
 import MergeProducts from './admin/MergeProducts.jsx';
 import StoresManagement from './admin/StoresManagement.jsx';
 import DiscardedReferences from './admin/DiscardedReferences.jsx';
+import CreateProduct from './admin/CreateProduct.jsx';
+import ReassignPrices from './admin/ReassignPrices.jsx';
 
 const AdminPanel = () => {
     const navigate = useNavigate();
@@ -56,6 +58,22 @@ const AdminPanel = () => {
                         Descartados
                     </button>
                 </li>
+                <li className="nav-item">
+                    <button
+                        className={`nav-link ${activeTab === 'create' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('create')}
+                    >
+                        Crear Producto
+                    </button>
+                </li>
+                <li className="nav-item">
+                    <button
+                        className={`nav-link ${activeTab === 'reassign' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('reassign')}
+                    >
+                        Reasignar Precios
+                    </button>
+                </li>
             </ul>
 
             {/* MATCHES PENDIENTES */}
@@ -69,6 +87,12 @@ const AdminPanel = () => {
 
             {/* DESCARTADOS */}
             {activeTab === 'discarded' && <DiscardedReferences />}
+
+            {/* CREAR PRODUCTO */}
+            {activeTab === 'create' && <CreateProduct />}
+
+            {/* REASIGNAR PRECIOS */}
+            {activeTab === 'reassign' && <ReassignPrices />}
         </div>
     );
 };

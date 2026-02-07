@@ -4,7 +4,6 @@ const NavBar = () => {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('role');
-    const userLabel = localStorage.getItem('userEmail') || localStorage.getItem('userName') || 'Mi cuenta';
 
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -15,9 +14,9 @@ const NavBar = () => {
     };
 
     return (
-        <nav className="navbar navbar-expand-lg border-bottom" style={{ position: 'sticky', top: 0, zIndex: 1000, backgroundColor: '#198754' }}>
+        <nav className="navbar navbar-expand-lg navbar-dark bg-success sticky-top border-bottom">
             <div className="container-fluid">
-                <Link className="navbar-brand fw-bold text-white" to="/products">Optify</Link>
+                <Link className="navbar-brand fw-bold" to="/products">Optify</Link>
 
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain" aria-controls="navMain" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
@@ -40,20 +39,20 @@ const NavBar = () => {
                                 )}
                             </ul>
 
-                            <div className="d-flex align-items-center gap-2">
-                                <Link to="/profile" className="text-white small text-decoration-none" style={{ cursor: 'pointer' }}>
-                                    👤 {userLabel}
+                            <div className="d-flex flex-column flex-lg-row align-items-lg-center gap-2" id="navButtons">
+                                <Link to="/profile" className="text-white small text-decoration-none">
+                                    Mi cuenta
                                 </Link>
                                 <button className="btn btn-light btn-sm" onClick={handleLogout}>Cerrar sesión</button>
                             </div>
                         </>
                     ) : (
                         <>
-                            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                            <ul className="navbar-nav mb-2 mb-lg-0">
                             </ul>
-                            <div className="d-flex align-items-center gap-2">
+                            <div className="d-flex flex-column gap-2" id="navButtons">
                                 <Link className="btn btn-light btn-sm" to="/login">Iniciar sesión</Link>
-                                <Link className="btn btn-light btn-sm text-success fw-bold" to="/signup">Registrarse</Link>
+                                <Link className="btn btn-light btn-sm" to="/signup">Registrarse</Link>
                             </div>
                         </>
                     )}

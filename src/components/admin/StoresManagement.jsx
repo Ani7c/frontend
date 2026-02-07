@@ -15,6 +15,14 @@ const StoresManagement = () => {
     });
     const [loading, setLoading] = useState(false);
 
+    const normalizeStore = (store) => ({
+        ...store,
+        rut: store.rut,
+        name: store.name || '',
+        fantasyName: store.fantasyName || '',
+        homePage: store.homePage || ''
+    });
+
     useEffect(() => {
         fetchStores();
     }, []);
@@ -22,10 +30,10 @@ const StoresManagement = () => {
     const fetchStores = async () => {
         setLoading(true);
         try {
-            const response = await fetch('http://localhost:8080/stores/getAllStores');
+            const response = await fetch(`${API_BASE_URL}/stores/getAllStores`);
             if (response.ok) {
                 const data = await response.json();
-                setStores(data);
+                setStores((data || []).map(normalizeStore));
             } else {
                 toast.error('Error al cargar tiendas');
             }
@@ -44,7 +52,7 @@ const StoresManagement = () => {
         setLoading(true);
         
         try {
-            const response = await fetch(`http://localhost:8080${endpoint}`, {
+            const response = await fetch(`${API_BASE_URL}${endpoint}`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -106,12 +114,13 @@ const StoresManagement = () => {
     };
 
     const handleEditStore = (store) => {
-        setEditingStore(store);
+        const normalized = normalizeStore(store);
+        setEditingStore(normalized);
         setStoreForm({
-            rut: store.rut.toString(),
-            name: store.name,
-            fantasyName: store.fantasyName,
-            homePage: store.homePage
+            rut: normalized.rut?.toString() || '',
+            name: normalized.name,
+            fantasyName: normalized.fantasyName,
+            homePage: normalized.homePage
         });
         setShowStoreForm(true);
     };
@@ -174,7 +183,7 @@ const StoresManagement = () => {
                                     />
                                 </div>
                                 <div className="col-md-6 mb-3">
-                                    <label className="form-label">Nombre Legal</label>
+                                    <label className="form-label">Razon social</label>
                                     <input
                                         type="text"
                                         className="form-control"

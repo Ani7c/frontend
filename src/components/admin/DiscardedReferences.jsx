@@ -90,7 +90,7 @@ const DiscardedReferences = () => {
                             {references.map((ref) => (
                                 <tr key={ref.id}>
                                     <td>{ref.id}</td>
-                                    <td>{ref.url}</td>
+                                    <td><a href={ref.url} target="_blank" rel="noopener noreferrer">{ref.url}</a></td>
                                     <td>
                                         <button
                                             className="btn btn-outline-danger btn-sm"

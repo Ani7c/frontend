@@ -6,6 +6,7 @@ import ProductFilters from './products/ProductFilters';
 import Pagination from './products/Pagination';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+console.log('API_BASE_URL:', API_BASE_URL);
 
 const ProductList = () => {
     const [products, setProducts] = useState([]);

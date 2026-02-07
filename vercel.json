@@ -2,6 +2,7 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "env": {
-    "VITE_API_URL": "https://optify-backend-389924772240.us-east1.run.app/"
+    "VITE_API_URL":"http://localhost:8080"
+    
   }
 }

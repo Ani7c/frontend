@@ -1,8 +1,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router"
 import { toast } from "react-toastify";
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+import { AUTH_ENDPOINTS, getAuthHeaders } from "../config/api";
 
 const Login = () => {
 
@@ -42,7 +41,7 @@ const Login = () => {
       redirect: "follow"
     };
 
-    fetch(`${API_BASE_URL}/users/login`, requestOptions)
+    fetch(`${AUTH_ENDPOINTS.LOGIN}`, requestOptions)
       .then(async response => {
         const textBody = await response.text();
         if (!response.ok) {
@@ -71,6 +70,12 @@ const Login = () => {
         }
         if (data.name) {
           localStorage.setItem("userName", data.name);
+        }
+        if (data.preferredDay !== undefined && data.preferredDay !== null) {
+          localStorage.setItem("preferredDay", String(data.preferredDay));
+        }
+        if (data.storeRut !== undefined && data.storeRut !== null) {
+          localStorage.setItem("storeRut", String(data.storeRut));
         }
         navigate("/products"); 
       })
@@ -122,7 +127,7 @@ const Login = () => {
             disabled={!botonHabilitado}
           />
           <div className="text-center">
-            <Link to="/signup" className="text-decoration-none">¿No tienes cuenta? Regístrate</Link>
+            <Link to="/signup" className="text-decoration-none text-dark">¿No tienes cuenta? Regístrate</Link>
           </div>
         </form>
       </div>

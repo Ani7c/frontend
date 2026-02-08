@@ -24,7 +24,7 @@ const CartItem = ({ item, onRemove, onSubtract, onAdd }) => {
                             className="btn btn-danger btn-sm"
                             onClick={() => onRemove(item.productId)}
                         >
-                            🗑️ Eliminar
+                            Eliminar
                         </button>
                     </div>
                 </div>

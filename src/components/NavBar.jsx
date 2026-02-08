@@ -10,6 +10,8 @@ const NavBar = () => {
         localStorage.removeItem('userEmail');
         localStorage.removeItem('userName');
         localStorage.removeItem('role');
+        localStorage.removeItem('preferredDay');
+        localStorage.removeItem('storeRut');
         navigate('/login');
     };
 

@@ -4,9 +4,7 @@ import { toast } from 'react-toastify';
 import ProductCard from './products/ProductCard';
 import ProductFilters from './products/ProductFilters';
 import Pagination from './products/Pagination';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
-console.log('API_BASE_URL:', API_BASE_URL);
+import { PRODUCT_ENDPOINTS, CATEGORY_ENDPOINTS, CART_ENDPOINTS, getAuthHeaders } from '../config/api';
 
 const ProductList = () => {
     const [products, setProducts] = useState([]);
@@ -29,16 +27,16 @@ const ProductList = () => {
             let url;
             if (selectedCategory && searchTerm) {
                 // Si hay categoría Y búsqueda, primero carga la categoría y luego filtra en front
-                url = `${API_BASE_URL}/api/products/category/${selectedCategory}?page=${page}&size=20`;
+                url = `${PRODUCT_ENDPOINTS.BY_CATEGORY(selectedCategory)}?page=${page}&size=20`;
             } else if (searchTerm) {
                 // Si solo hay término de búsqueda, buscar por nombre
-                url = `${API_BASE_URL}/api/products/search?term=${encodeURIComponent(searchTerm)}&page=${page}&size=20`;
+                url = `${PRODUCT_ENDPOINTS.SEARCH}?term=${encodeURIComponent(searchTerm)}&page=${page}&size=20`;
             } else if (selectedCategory) {
                 // Si hay categoría seleccionada, usar endpoint específico
-                url = `${API_BASE_URL}/api/products/category/${selectedCategory}?page=${page}&size=20`;
+                url = `${PRODUCT_ENDPOINTS.BY_CATEGORY(selectedCategory)}?page=${page}&size=20`;
             } else {
                 // Sin filtro, traer todos los productos
-                url = `${API_BASE_URL}/api/products/allProducts?page=${page}&size=20`;
+                url = `${PRODUCT_ENDPOINTS.ALL}?page=${page}&size=20`;
             }
 
             const response = await fetch(url, {
@@ -97,7 +95,7 @@ const ProductList = () => {
             };
 
             const response = await fetch(
-                `${API_BASE_URL}/cart/addProduct?id=${product.productId}&quant=${quantity}`,
+                `${CART_ENDPOINTS.ADD}?id=${product.productId}&quant=${quantity}`,
                 {
                     method: 'POST',
                     headers
@@ -122,7 +120,7 @@ const ProductList = () => {
             try {
                 const headers = { 'Accept': 'application/json' };
 
-                const resp = await fetch(`${API_BASE_URL}/api/products/categories`, { headers });
+                const resp = await fetch(`${CATEGORY_ENDPOINTS.ALL}`, { headers });
                 if (resp.ok) {
                     const data = await resp.json();
                     // Guardar objetos completos con categoryId y name

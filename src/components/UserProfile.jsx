@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+import { USER_ENDPOINTS, STORE_ENDPOINTS, getAuthHeaders } from '../config/api';
 
 const UserProfile = () => {
     const navigate = useNavigate();
@@ -37,8 +36,12 @@ const UserProfile = () => {
             return;
         }
 
+        setEmail(localStorage.getItem('userEmail') || '');
+        const storedDay = localStorage.getItem('preferredDay') ?? localStorage.getItem('userPreferredDay');
+        const storedStore = localStorage.getItem('storeRut') ?? localStorage.getItem('userPreferredStore');
+        setPreferredDay(storedDay || '');
+        setPreferredStore(storedStore || '');
         fetchStores();
-        fetchUserProfile();
     }, []);
 
     const fetchStores = async () => {
@@ -47,35 +50,13 @@ const UserProfile = () => {
                 'Accept': 'application/json'
             };
 
-            const response = await fetch('http://localhost:8080/stores/getAllStores', { headers });
+            const response = await fetch(`${STORE_ENDPOINTS.ALL}`, { headers });
             if (response.ok) {
                 const data = await response.json();
                 setStores(data);
             }
         } catch (error) {
             console.error("Error cargando tiendas:", error);
-        }
-    };
-
-    const fetchUserProfile = async () => {
-        const token = localStorage.getItem('token');
-
-        try {
-            const headers = {
-                'Authorization': `Bearer ${token}`
-            };
-
-            // Asumiendo que hay un endpoint para obtener el perfil del usuario
-            // Si no existe, estos campos quedarán vacíos
-            const response = await fetch('http://localhost:8080/api/users/profile', { headers });
-            if (response.ok) {
-                const data = await response.json();
-                setEmail(data.email || '');
-                setPreferredDay(data.userPreferredDay || '');
-                setPreferredStore(data.userPreferredStore || '');
-            }
-        } catch (error) {
-            console.error("Error cargando perfil:", error);
         } finally {
             setLoading(false);
         }
@@ -97,7 +78,7 @@ const UserProfile = () => {
                 userPreferredStore: preferredStore ? parseInt(preferredStore) : null
             };
 
-            const response = await fetch(`${API_BASE_URL}/api/users/updateProfile`, {
+            const response = await fetch(`${USER_ENDPOINTS.UPDATE_PROFILE}`, {
                 method: 'POST',
                 headers,
                 body: JSON.stringify(body)
@@ -107,6 +88,16 @@ const UserProfile = () => {
                 toast.success('Perfil actualizado correctamente');
                 if (email) {
                     localStorage.setItem('userEmail', email);
+                }
+                if (preferredDay) {
+                    localStorage.setItem('preferredDay', String(preferredDay));
+                } else {
+                    localStorage.removeItem('preferredDay');
+                }
+                if (preferredStore) {
+                    localStorage.setItem('storeRut', String(preferredStore));
+                } else {
+                    localStorage.removeItem('storeRut');
                 }
             } else {
                 const error = await response.text();
@@ -144,7 +135,7 @@ const UserProfile = () => {
                 newPassword
             };
 
-            const response = await fetch(`${API_BASE_URL}/api/users/changePassword`, {
+            const response = await fetch(`${USER_ENDPOINTS.CHANGE_PASSWORD}`, {
                 method: 'POST',
                 headers,
                 body: JSON.stringify(body)
@@ -223,7 +214,7 @@ const UserProfile = () => {
                                         <option value="">Seleccionar tienda</option>
                                         {stores.map(store => (
                                             <option key={store.rut} value={store.rut}>
-                                                {store.name}
+                                                {store.fantasyName}
                                             </option>
                                         ))}
                                     </select>

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+import { PRODUCT_ENDPOINTS, getAuthHeaders } from '../../config/api';
 
 const MergeProducts = () => {
     const [keepProductId, setKeepProductId] = useState('');
@@ -27,7 +26,7 @@ const MergeProducts = () => {
 
         try {
             const response = await fetch(
-                `${API_BASE_URL}/api/products/search?term=${encodeURIComponent(searchTerm)}&page=0&size=10`
+                `${PRODUCT_ENDPOINTS.SEARCH}?term=${encodeURIComponent(searchTerm)}&page=0&size=10`
             );
 
             if (response.ok) {
@@ -61,7 +60,7 @@ const MergeProducts = () => {
         
         try {
             const response = await fetch(
-                `${API_BASE_URL}/products/mergeProducts?keepProductId=${keepProductId}&suprProductId=${suprProductId}`,
+                `${PRODUCT_ENDPOINTS.MERGE}?keepProductId=${keepProductId}&suprProductId=${suprProductId}`,
                 {
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${token}` }

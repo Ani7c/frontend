@@ -2,7 +2,7 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "env": {
-    "VITE_API_URL":"http://localhost:8080"
+    "VITE_API_URL_PROD":"https://optify-backend-production.up.railway.app"
     
   }
 }

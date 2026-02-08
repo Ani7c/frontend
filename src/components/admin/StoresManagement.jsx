@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+import { STORE_ENDPOINTS, getAuthHeaders } from '../../config/api';
 
 const StoresManagement = () => {
     const [stores, setStores] = useState([]);
@@ -30,7 +29,7 @@ const StoresManagement = () => {
     const fetchStores = async () => {
         setLoading(true);
         try {
-            const response = await fetch(`${API_BASE_URL}/stores/getAllStores`);
+            const response = await fetch(`${STORE_ENDPOINTS.ALL}`);
             if (response.ok) {
                 const data = await response.json();
                 setStores((data || []).map(normalizeStore));
@@ -48,11 +47,11 @@ const StoresManagement = () => {
     const handleStoreSubmit = async (e) => {
         e.preventDefault();
         const token = localStorage.getItem('token');
-        const endpoint = editingStore ? '/stores/updateStore' : '/stores/addStore';
+        const endpoint = editingStore ? STORE_ENDPOINTS.UPDATE : STORE_ENDPOINTS.ADD;
         setLoading(true);
         
         try {
-            const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+            const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -92,7 +91,7 @@ const StoresManagement = () => {
         setLoading(true);
         
         try {
-            const response = await fetch(`${API_BASE_URL}/stores/deleteStore?rut=${rut}`, {
+            const response = await fetch(`${STORE_ENDPOINTS.DELETE}?rut=${rut}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });

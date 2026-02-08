@@ -1,8 +1,7 @@
 import { useRef, useState, useId, useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+import { AUTH_ENDPOINTS, STORE_ENDPOINTS, getAuthHeaders } from "../config/api";
 
 const Signup = () => {
     const [tiendas, setTiendas] = useState([]);
@@ -69,7 +68,7 @@ const Signup = () => {
         };
 
         try {
-            const response = await fetch(`${API_BASE_URL}/users/register`, requestOptions);
+            const response = await fetch(`${AUTH_ENDPOINTS.REGISTER}`, requestOptions);
 
             // Obtener el texto de la respuesta primero
             const textBody = await response.text();
@@ -128,7 +127,7 @@ const Signup = () => {
                     'Accept': 'application/json',
                 };
 
-                const response = await fetch(`${API_BASE_URL}/stores/getAllStores`, { headers });
+                const response = await fetch(`${STORE_ENDPOINTS.ALL}`, { headers });
                 if (response.ok) {
                     const data = await response.json();
                     setTiendas(data);
@@ -231,7 +230,7 @@ const Signup = () => {
                         >
                             <option value="" disabled>Seleccione una tienda</option>
                             {tiendas.map(tienda => (
-                                <option key={tienda.rut} value={tienda.rut}>{tienda.name}</option>
+                                <option key={tienda.rut} value={tienda.rut}>{tienda.fantasyName}</option>
                             ))}
                         </select>
                     </div>
@@ -270,7 +269,7 @@ const Signup = () => {
                         disabled={!botonHabilitado}
                     />
                     <div className="text-center">
-                        <Link to="/" className="text-decoration-none">¿Ya tienes cuenta? Inicia sesión</Link>
+                        <Link to="/" className="text-decoration-none text-dark">¿Ya tienes cuenta? Inicia sesión</Link>
                     </div>
                 </form>
             </div>

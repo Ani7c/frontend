@@ -8,7 +8,7 @@ const CartSummary = ({ onCalculate }) => {
                             className="btn btn-success btn-lg"
                             onClick={onCalculate}
                         >
-                            📊 Calcular Mejor Opción
+                            Calcular Mejor Opción
                         </button>
                     </div>
                 </div>

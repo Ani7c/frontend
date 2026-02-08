@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+import { PRODUCT_ENDPOINTS, STORE_ENDPOINTS, getAuthHeaders } from '../../config/api';
 
 const CreateProduct = () => {
     const [stores, setStores] = useState([]);
@@ -23,7 +22,7 @@ const CreateProduct = () => {
         const fetchStores = async () => {
             const token = localStorage.getItem('token');
             try {
-                const response = await fetch(`${API_BASE_URL}/stores/getAllStores`, {
+                const response = await fetch(`${STORE_ENDPOINTS.ALL}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 if (response.ok) {
@@ -58,7 +57,7 @@ const CreateProduct = () => {
         setLoading(true);
 
         try {
-            const response = await fetch(`${API_BASE_URL}/products/manualImport`, {
+            const response = await fetch(`${PRODUCT_ENDPOINTS.MANUAL_IMPORT}`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,

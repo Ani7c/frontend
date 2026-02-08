@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+import { PRODUCT_ENDPOINTS, getAuthHeaders } from '../../config/api';
 
 const ReassignPrices = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -28,7 +27,7 @@ const ReassignPrices = () => {
 
         try {
             const response = await fetch(
-                `${API_BASE_URL}/api/products/search?term=${encodeURIComponent(term)}&page=0&size=10`
+                `${PRODUCT_ENDPOINTS.SEARCH}?term=${encodeURIComponent(term)}&page=0&size=10`
             );
 
             if (response.ok) {
@@ -56,7 +55,7 @@ const ReassignPrices = () => {
         
         try {
             const response = await fetch(
-                `${API_BASE_URL}/api/products/getStoreProductsByProduct?productId=${productId}`,
+                `${PRODUCT_ENDPOINTS.GET_STORE_PRODUCTS}?productId=${productId}`,
                 {
                     headers: { 'Authorization': `Bearer ${token}` }
                 }
@@ -87,7 +86,7 @@ const ReassignPrices = () => {
 
         try {
             const response = await fetch(
-                `${API_BASE_URL}/api/products/search?term=${encodeURIComponent(term)}&page=0&size=10`
+                `${PRODUCT_ENDPOINTS.SEARCH}?term=${encodeURIComponent(term)}&page=0&size=10`
             );
 
             if (response.ok) {
@@ -114,7 +113,7 @@ const ReassignPrices = () => {
 
         try {
             const response = await fetch(
-                `${API_BASE_URL}/api/products/changeProductReference?newProductId=${newProduct.productId}&oldProductid=${reassigning.oldProductId}&storeRut=${reassigning.storeRut}`,
+                `${PRODUCT_ENDPOINTS.CHANGE_PRODUCT_REFERENCE}?newProductId=${newProduct.productId}&oldProductid=${reassigning.oldProductId}&storeRut=${reassigning.storeRut}`,
                 {
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${token}` }
@@ -147,7 +146,7 @@ const ReassignPrices = () => {
 
         try {
             const response = await fetch(
-                `${API_BASE_URL}/api/products/deleteProductReference?productId=${productId}&storeRut=${storeRut}`,
+                `${PRODUCT_ENDPOINTS.DELETE_PRODUCT_REFERENCE}?productId=${productId}&storeRut=${storeRut}`,
                 {
                     method: 'DELETE',
                     headers: { 'Authorization': `Bearer ${token}` }
@@ -260,7 +259,7 @@ const ReassignPrices = () => {
                                                         onClick={() => handleDeleteReference(selectedProduct.productId, sp.storeRut)}
                                                         disabled={loading}
                                                     >
-                                                        🗑️ Eliminar
+                                                        Eliminar
                                                     </button>
                                                 </td>
                                             </tr>

@@ -229,7 +229,7 @@ const ReassignPrices = () => {
                                     <tbody>
                                         {storePrices.map((sp) => (
                                             <tr key={`${sp.storeRut}-${sp.product?.productId}`}>
-                                                <td>{sp.store?.fantasyName || 'N/A'}</td>
+                                                <td>{sp.storeFantasyName || 'N/A'}</td>
                                                 <td>{sp.storeRut}</td>
                                                 <td>${sp.price?.toFixed(2)}</td>
                                                 <td>
